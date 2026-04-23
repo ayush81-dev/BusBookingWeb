@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">🚌 BusBook</div>
+        <div class="nav-links">
+            <a href="/buses">View Buses</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Welcome, <%= user.name %>! 👋</h2>
+
+        <h3>Your Bookings</h3>
+        <% if(bookings.length === 0) { %>
+            <p>No bookings yet! <a href="/buses">Book a ticket</a></p>
+        <% } else { %>
+        <div class="bus-grid">
+            <% bookings.forEach(b => { %>
+            <div class="bus-card">
+                <h3>🎟️ <%= b.bus_name %></h3>
+                <p>📍 <%= b.from_city %> → <%= b.to_city %></p>
+                <p>📅 Date: <%= b.booking_date %></p>
+                <p>💺 Seats: <%= b.seats_booked %></p>
+                <p>💰 Total Fare: Rs.<%= b.total_fare %></p>
+            </div>
+            <% }) %>
+        </div>
+        <% } %>
+    </div>
+</body>
+</html>

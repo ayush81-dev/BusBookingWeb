@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Available Buses</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">🚌 BusBook</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Available Buses</h2>
+        <div class="bus-grid">
+            <% buses.forEach(bus => { %>
+            <div class="bus-card">
+                <h3>🚌 <%= bus.bus_name %></h3>
+                <p>📍 <%= bus.from_city %> → <%= bus.to_city %></p>
+                <p>🕐 Departure: <%= bus.departure_time %></p>
+                <p>💺 Seats Available: <%= bus.available_seats %></p>
+                <p>💰 Fare: Rs.<%= bus.fare %> per seat</p>
+                <form action="/book" method="POST">
+                    <input type="hidden" name="bus_id" value="<%= bus.id %>">
+                    <input type="number" name="seats" placeholder="Seats" min="1" max="<%= bus.available_seats %>" required>
+                    <button type="submit" class="btn">Book Now</button>
+                </form>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+</body>
+</html>

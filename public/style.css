@@ -1,0 +1,201 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f0f4f8;
+    color: #333;
+}
+
+nav {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.logo {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #ffd700;
+}
+
+.hero {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    background: #ffd700;
+    color: #333;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.btn:hover {
+    background: #ffed4a;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 60px 20px;
+}
+
+.card {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.form-container {
+    max-width: 450px;
+    margin: 60px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #667eea;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.form-container input:focus {
+    border-color: #667eea;
+    outline: none;
+}
+
+.form-container .btn {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+}
+
+.form-container p {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.form-container a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.container h2 {
+    color: #667eea;
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+.bus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.bus-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.bus-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.bus-card h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.bus-card p {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.bus-card input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.bus-card .btn {
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+}
