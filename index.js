@@ -3,12 +3,14 @@ const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const path = require('path');
+const nodemailer = require('nodemailer');
 
 const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'bus123',
@@ -29,17 +31,47 @@ db.connect(err => {
     else console.log('MySQL Connected!');
 });
 
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'mac.home2305@gmail.com',
+        pass: 'jueu uhgy gagw kevk'
+    }
+});
+
+const otpStore = {};
+
 app.get('/', (req, res) => res.render('home'));
 app.get('/register', (req, res) => res.render('register'));
 app.get('/login', (req, res) => res.render('login'));
+
 app.get('/buses', (req, res) => {
     db.query('SELECT * FROM buses', (err, results) => {
         res.render('buses', { buses: results });
     });
 });
 
+app.post('/send-otp', (req, res) => {
+    const { email } = req.body;
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    otpStore[email] = otp;
+    const mailOptions = {
+        from: 'TERA_GMAIL@gmail.com',
+        to: email,
+        subject: 'BusBook OTP Verification',
+        html: `<h2>Your OTP is: <strong>${otp}</strong></h2><p>Valid for 5 minutes.</p>`
+    };
+    transporter.sendMail(mailOptions, (err) => {
+        if (err) res.json({ success: false });
+        else res.json({ success: true });
+    });
+});
+
 app.post('/register', async (req, res) => {
-    const { name, email, password, phone } = req.body;
+    const { name, email, password, phone, otp } = req.body;
+    if (parseInt(otp) !== otpStore[email]) {
+        return res.send('Invalid OTP! Go back and try again.');
+    }
     const hash = await bcrypt.hash(password, 10);
     db.query('INSERT INTO users (name, email, password, phone) VALUES (?,?,?,?)',
         [name, email, hash, phone], (err) => {

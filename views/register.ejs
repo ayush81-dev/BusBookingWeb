@@ -16,14 +16,54 @@
 
     <div class="form-container">
         <h2>Create Account</h2>
-        <form action="/register" method="POST">
-            <input type="text" name="name" placeholder="Full Name" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="text" name="phone" placeholder="Phone Number" required>
-            <button type="submit" class="btn">Register</button>
-        </form>
+        <input type="text" id="name" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="text" id="phone" placeholder="Phone Number" required>
+        
+        <button class="btn" onclick="sendOTP()">Send OTP</button>
+        
+        <div id="otp-section" style="display:none; margin-top:15px;">
+            <input type="text" id="otp" placeholder="Enter OTP">
+            <form id="registerForm" action="/register" method="POST">
+                <input type="hidden" name="name" id="h_name">
+                <input type="hidden" name="email" id="h_email">
+                <input type="hidden" name="password" id="h_password">
+                <input type="hidden" name="phone" id="h_phone">
+                <input type="hidden" name="otp" id="h_otp">
+                <button type="submit" class="btn" style="margin-top:10px;" onclick="fillForm()">Verify & Register</button>
+            </form>
+        </div>
+
         <p>Already have an account? <a href="/login">Login</a></p>
     </div>
+
+    <script>
+        async function sendOTP() {
+            const email = document.getElementById('email').value;
+            if (!email) { alert('Enter email first!'); return; }
+            
+            const res = await fetch('/send-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert('OTP sent to your email!');
+                document.getElementById('otp-section').style.display = 'block';
+            } else {
+                alert('Failed to send OTP!');
+            }
+        }
+
+        function fillForm() {
+            document.getElementById('h_name').value = document.getElementById('name').value;
+            document.getElementById('h_email').value = document.getElementById('email').value;
+            document.getElementById('h_password').value = document.getElementById('password').value;
+            document.getElementById('h_phone').value = document.getElementById('phone').value;
+            document.getElementById('h_otp').value = document.getElementById('otp').value;
+        }
+    </script>
 </body>
 </html>
