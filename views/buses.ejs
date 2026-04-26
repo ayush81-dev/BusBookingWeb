@@ -93,8 +93,10 @@
 
         map.fitBounds([fromCoord, toCoord], {padding: [50, 50]});
 
-        document.getElementById('distance-info').innerHTML = 
-            `📏 Distance: <strong>${distance} km</strong>`;
+        const hours = Math.floor(distance / 60);
+const minutes = Math.round((distance % 60) / 60 * 60);
+document.getElementById('distance-info').innerHTML = 
+    `📏 Distance: <strong>${distance} km</strong> &nbsp;|&nbsp; ⏱️ Estimated Time: <strong>${hours} hr ${minutes} min</strong>`;
     }
 }
     </script>
