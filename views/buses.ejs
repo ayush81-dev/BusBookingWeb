@@ -24,7 +24,7 @@
         <h2>Available Buses</h2>
 
         <div id="map"></div>
-
+        <div id="distance-info" style="text-align:center; font-size:18px; margin:10px 0; color:#667eea;"></div>
         <div class="bus-grid">
             <% buses.forEach(bus => { %>
             <div class="bus-card" onclick="showRoute('<%= bus.from_city %>', '<%= bus.to_city %>')">
@@ -66,26 +66,37 @@
         let markers = [];
 
         function showRoute(from, to) {
-            if (currentLine) map.removeLayer(currentLine);
-            markers.forEach(m => map.removeLayer(m));
-            markers = [];
+    if (currentLine) map.removeLayer(currentLine);
+    markers.forEach(m => map.removeLayer(m));
+    markers = [];
 
-            const fromCoord = cityCoords[from];
-            const toCoord = cityCoords[to];
+    const fromCoord = cityCoords[from];
+    const toCoord = cityCoords[to];
 
-            if (fromCoord && toCoord) {
-                currentLine = L.polyline([fromCoord, toCoord], {
-                    color: '#667eea',
-                    weight: 4,
-                    dashArray: '10, 5'
-                }).addTo(map);
+    if (fromCoord && toCoord) {
+        currentLine = L.polyline([fromCoord, toCoord], {
+            color: '#667eea',
+            weight: 4,
+            dashArray: '10, 5'
+        }).addTo(map);
 
-                markers.push(L.marker(fromCoord).addTo(map).bindPopup(`🚌 From: ${from}`).openPopup());
-                markers.push(L.marker(toCoord).addTo(map).bindPopup(`📍 To: ${to}`));
+        const R = 6371;
+        const dLat = (toCoord[0] - fromCoord[0]) * Math.PI / 180;
+        const dLon = (toCoord[1] - fromCoord[1]) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(fromCoord[0] * Math.PI / 180) * Math.cos(toCoord[0] * Math.PI / 180) *
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+        const distance = Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
 
-                map.fitBounds([fromCoord, toCoord], {padding: [50, 50]});
-            }
-        }
+        markers.push(L.marker(fromCoord).addTo(map).bindPopup(`🚌 From: ${from}`).openPopup());
+        markers.push(L.marker(toCoord).addTo(map).bindPopup(`📍 To: ${to} | 📏 Distance: ${distance} km`));
+
+        map.fitBounds([fromCoord, toCoord], {padding: [50, 50]});
+
+        document.getElementById('distance-info').innerHTML = 
+            `📏 Distance: <strong>${distance} km</strong>`;
+    }
+}
     </script>
 </body>
 </html>
