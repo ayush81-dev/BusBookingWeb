@@ -32,10 +32,12 @@ db.connect(err => {
 });
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
     auth: {
-        user: 'mac.home2305@gmail.com',
-        pass: 'jueu uhgy gagw kevk'
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS
     }
 });
 
@@ -56,7 +58,7 @@ app.post('/send-otp', (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     otpStore[email] = otp;
     const mailOptions = {
-        from: 'TERA_GMAIL@gmail.com',
+        from: process.env.GMAIL_USER,
         to: email,
         subject: 'BusBook OTP Verification',
         html: `<h2>Your OTP is: <strong>${otp}</strong></h2><p>Valid for 5 minutes.</p>`
