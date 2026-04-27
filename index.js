@@ -3,7 +3,6 @@ const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const path = require('path');
-const nodemailer = require('nodemailer');
 
 const app = express();
 
@@ -31,18 +30,6 @@ db.connect(err => {
     else console.log('MySQL Connected!');
 });
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS
-    }
-});
-
-const otpStore = {};
-
 app.get('/', (req, res) => res.render('home'));
 app.get('/register', (req, res) => res.render('register'));
 app.get('/login', (req, res) => res.render('login'));
@@ -53,27 +40,8 @@ app.get('/buses', (req, res) => {
     });
 });
 
-app.post('/send-otp', (req, res) => {
-    const { email } = req.body;
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    otpStore[email] = otp;
-    const mailOptions = {
-        from: process.env.GMAIL_USER,
-        to: email,
-        subject: 'BusBook OTP Verification',
-        html: `<h2>Your OTP is: <strong>${otp}</strong></h2><p>Valid for 5 minutes.</p>`
-    };
-    transporter.sendMail(mailOptions, (err) => {
-        if (err) res.json({ success: false });
-        else res.json({ success: true });
-    });
-});
-
 app.post('/register', async (req, res) => {
-    const { name, email, password, phone, otp } = req.body;
-    if (parseInt(otp) !== otpStore[email]) {
-        return res.send('Invalid OTP! Go back and try again.');
-    }
+    const { name, email, password, phone } = req.body;
     const hash = await bcrypt.hash(password, 10);
     db.query('INSERT INTO users (name, email, password, phone) VALUES (?,?,?,?)',
         [name, email, hash, phone], (err) => {
